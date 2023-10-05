@@ -1,0 +1,33 @@
+﻿@model IEnumerable<UserBuyScreen.Models.ModelProductCategory>
+
+@{
+    ViewBag.Title = "showAllCategory";
+}
+
+<h2>showAllCategory</h2>
+                                                       
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.productCategoryId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.productCategoryName)
+        </th>
+       
+       
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.productCategoryId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.productCategoryName)
+        </td>
+    
+    </tr>
+}
+
+</table>
