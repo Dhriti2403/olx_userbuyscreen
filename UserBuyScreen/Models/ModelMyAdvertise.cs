@@ -7,7 +7,7 @@ namespace UserBuyScreen.Models
 {
     public class ModelMyAdvertise : ModelArea
     {
-        internal Func<string> imageData;
+ 
 
         public int advertiseId { get; set; }
         public int productSubCategoryId { get; set; }

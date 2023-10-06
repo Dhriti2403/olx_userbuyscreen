@@ -1,0 +1,49 @@
+﻿@model IEnumerable<UserBuyScreen.Models.ModelAdvertiseImages>
+
+@{
+    ViewBag.Title = "showAdvertise";
+}
+
+<h2>showAdvertise</h2>
+
+<table class="table">
+    <tr>
+
+ 
+        <th>
+            @Html.DisplayNameFor(model => model.advertiseTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.advertiseDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.advertisePrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.imageData)
+        </th>
+
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+
+
+
+    <td>
+        @Html.DisplayFor(modelItem => item.advertiseTitle)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.advertiseDescription)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.advertisePrice)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.imageData)
+    </td>
+
+</tr>
+}
+
+</table>

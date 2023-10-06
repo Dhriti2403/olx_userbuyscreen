@@ -14,18 +14,18 @@ namespace UserBuyScreen.Controllers
 
         public ActionResult newfilter(int? categoryid, int? subcategoryid, int? stateid, int? cityid, int? areaid, decimal? minprice, decimal? maxprice)
         {
-            List<ModelMyAdvertise> list = dataAccess.newFilter(categoryid, subcategoryid, stateid, cityid, areaid, minprice, maxprice);
+            List<ModelAdvertiseImages> list = dataAccess.newFilter(categoryid, subcategoryid, stateid, cityid, areaid, minprice, maxprice);
 
             return View(list);
         }
 
-        public ActionResult ShowByProducts()
-        {
-            DataAccess dataAccess = new DataAccess();
-            IEnumerable<ModelAdvertiseImages> product = dataAccess.GetProducts();
+        //public ActionResult ShowByProducts()
+        //{
+        //    DataAccess dataAccess = new DataAccess();
+        //    IEnumerable<ModelAdvertiseImages> product = dataAccess.GetProducts();
            
-            return View(product);
-        }
+        //    return View(product);
+        //}
 
         
         //public ActionResult showcategorywithsubcategory()
@@ -42,6 +42,18 @@ namespace UserBuyScreen.Controllers
             List<ModelProductSubCategory> categorywithsub = dataAccess.GetCategoryWithSubcategories();
 
             return View(categorywithsub);
+        }
+
+        public ActionResult showAdvertise(int advertiseId)
+        {
+            DataAccess dataAccess = new DataAccess();
+            IEnumerable<ModelAdvertiseImages> getadd = dataAccess.GetProducts(advertiseId);
+            if (getadd != null)
+            {
+                return View(getadd);
+            }
+
+            return View(getadd);
         }
     }
 }
