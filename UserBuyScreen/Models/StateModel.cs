@@ -5,7 +5,7 @@ using System.Web;
 
 namespace UserBuyScreen.Models
 {
-    public class ModelState
+    public class StateModel
     {
         public int stateId { get; set; }
         public string stateName { get; set; }

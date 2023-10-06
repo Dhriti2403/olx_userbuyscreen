@@ -5,7 +5,7 @@ using System.Web;
 
 namespace UserBuyScreen.Models
 {
-    public class ModelProductSubCategory:ModelProductCategory
+    public class ProductSubCategoryModel:ProductCategoryModel
     {
         public int productSubCategoryId { get; set; }
         public int productCategoryId { get; set; }

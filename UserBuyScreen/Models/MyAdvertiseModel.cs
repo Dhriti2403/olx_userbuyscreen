@@ -5,7 +5,7 @@ using System.Web;
 
 namespace UserBuyScreen.Models
 {
-    public class ModelMyAdvertise : ModelArea
+    public class MyAdvertiseModel : AreaModel
     {
  
 

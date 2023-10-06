@@ -5,10 +5,10 @@ using System.Web;
 
 namespace UserBuyScreen.Models
 {
-    public class ModelArea : ModelCity
+    public class CityModel : StateModel
     {
-        public int areaId { get; set; }
         public int cityId { get; set; }
-        public string areaName { get; set; }
+        public int stateId { get; set; }
+        public string cityName { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace UserBuyScreen.Models
 {
-    public class ModelAdvertiseImages : ModelMyAdvertise
+    public class AdvertiseImagesModel : MyAdvertiseModel
     {
         public int advertiseImageId { get; set; }
         public int advertiseId { get; set; }    

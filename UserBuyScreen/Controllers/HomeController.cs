@@ -12,48 +12,30 @@ namespace UserBuyScreen.Controllers
         DataAccess dataAccess = new DataAccess();
 
 
-        public ActionResult newfilter(int? categoryid, int? subcategoryid, int? stateid, int? cityid, int? areaid, decimal? minprice, decimal? maxprice)
+        public ActionResult newfilter(int? categoryid, int? subcategoryid, int? stateid, int? cityid, int? areaid, decimal? minprice, decimal? maxprice,int? advertiseId)
         {
-            List<ModelAdvertiseImages> list = dataAccess.newFilter(categoryid, subcategoryid, stateid, cityid, areaid, minprice, maxprice);
+            List<AdvertiseImagesModel> list = dataAccess.newFilter(categoryid, subcategoryid, stateid, cityid, areaid, minprice, maxprice, advertiseId);
 
             return View(list);
         }
 
-        //public ActionResult ShowByProducts()
-        //{
-        //    DataAccess dataAccess = new DataAccess();
-        //    IEnumerable<ModelAdvertiseImages> product = dataAccess.GetProducts();
-           
-        //    return View(product);
-        //}
 
-        
-        //public ActionResult showcategorywithsubcategory()
-        //{
-        //    DataAccess dataAccess = new DataAccess();
-        //    List<CategoryWithSubcategoriesViewModel> categorywithsub = dataAccess.GetCategoriesWithSubcategories();
-
-        //    return View(categorywithsub);
-        //}
-
-        public ActionResult showcatsub()
+        public ActionResult showcategorywithsubcategory()
         {
             DataAccess dataAccess = new DataAccess();
-            List<ModelProductSubCategory> categorywithsub = dataAccess.GetCategoryWithSubcategories();
+            List<CategoryWithSubcategoriesViewModel> categorywithsub = dataAccess.GetCategoriesWithSubcategories();
 
             return View(categorywithsub);
         }
 
-        public ActionResult showAdvertise(int advertiseId)
+        public ActionResult showcatsub()
         {
             DataAccess dataAccess = new DataAccess();
-            IEnumerable<ModelAdvertiseImages> getadd = dataAccess.GetProducts(advertiseId);
-            if (getadd != null)
-            {
-                return View(getadd);
-            }
+            List<ProductSubCategoryModel> categorywithsub = dataAccess.GetCategoryWithSubcategories();
 
-            return View(getadd);
+            return View(categorywithsub);
         }
+
+     
     }
 }

@@ -19,32 +19,34 @@ namespace UserBuyScreen.Models
 
 
         #region FILTER
-        public List<ModelAdvertiseImages> newFilter(int? productCategoryId, int? productSubCategoryId, int? stateId, int? cityid, int? areaid, decimal? minprice, decimal? maxprice)
+        public List<AdvertiseImagesModel> newFilter(int? productCategoryId, int? productSubCategoryId, int? stateId, int? cityId, int? areaId, decimal? minprice, decimal? maxprice,int? advertiseId)
         {
-            List<ModelAdvertiseImages> models = new List<ModelAdvertiseImages>();
+            List<AdvertiseImagesModel> models = new List<AdvertiseImagesModel>();
+            _connection.Open();
             SqlCommand cmd = new SqlCommand("newfilter", _connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@productCategoryId", productCategoryId);
             cmd.Parameters.AddWithValue("@productsubCategoryId", productSubCategoryId);
-            cmd.Parameters.AddWithValue("@stateid", stateId);
-            cmd.Parameters.AddWithValue("@cityid", cityid);
-            cmd.Parameters.AddWithValue("@areaid", areaid);
+            cmd.Parameters.AddWithValue("@stateId", stateId);
+            cmd.Parameters.AddWithValue("@cityId", cityId);
+            cmd.Parameters.AddWithValue("@areaId", areaId);
             cmd.Parameters.AddWithValue("@minprice", minprice);
             cmd.Parameters.AddWithValue("@maxprice", maxprice);
-            _connection.Open();
+            cmd.Parameters.AddWithValue("@advertiseId", advertiseId);
+
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                ModelAdvertiseImages model = new ModelAdvertiseImages()
+                AdvertiseImagesModel model = new AdvertiseImagesModel()
                 {
+               
                     advertiseTitle = reader["advertiseTitle"].ToString(),
                     imageData= (byte[])reader["imageData"],
-
                     advertiseDescription = reader["advertiseDescription"].ToString(),
                     advertisePrice = Convert.ToInt32(reader["advertisePrice"]),
                     cityName = reader["cityName"].ToString(),
                     stateName = reader["statename"].ToString(),
-                    
+                    areaName=reader["areaName"].ToString(), 
                 };
                 models.Add(model);
             }
@@ -53,66 +55,75 @@ namespace UserBuyScreen.Models
         }
         #endregion
 
-        #region ByProduct
+       
 
-        public IEnumerable<ModelAdvertiseImages> GetProducts(int advertiseId)
+
+        public List<CategoryWithSubcategoriesViewModel> GetCategoriesWithSubcategories()
         {
-            List<ModelAdvertiseImages> products = new List<ModelAdvertiseImages>();
-            //string query = "select img.imageData,ad.advertiseTitle,ad.advertiseDescription,ad.advertisePrice from " +
-            //    "tbl_MyAdvertise ad join tbl_AdvertiseImages img on ad.advertiseId=img.advertiseId where " +
-            //    "img.advertiseId=@advertiseId";
-            SqlCommand cmd = new SqlCommand("DisplayAdDetail", _connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@advertiseId", advertiseId);
-        
+            List<CategoryWithSubcategoriesViewModel> categoriesWithSubcategories = new List<CategoryWithSubcategoriesViewModel>();
+
+
             _connection.Open();
 
-            SqlDataReader dr = cmd.ExecuteReader();
-            while (dr.Read())
+            string query = @"
+            SELECT
+                pc.productCategoryId AS CategoryId,
+                pc.productCategoryName AS CategoryName,
+                sb.productSubCategoryId AS SubcategoryId,
+                sb.productSubCategoryName AS SubcategoryName
+            FROM
+                tbl_ProductCategory pc
+            LEFT JOIN
+                tbl_ProductSubCategory sb
+            ON
+                pc.productCategoryId = sb.productCategoryId
+            ORDER BY
+                pc.productCategoryId, sb.productSubCategoryId";
+
+            using (SqlCommand command = new SqlCommand(query, _connection))
+            using (SqlDataReader reader = command.ExecuteReader())
             {
-                ModelAdvertiseImages advertise = new ModelAdvertiseImages()
+                CategoryWithSubcategoriesViewModel currentCategory = null;
+
+                while (reader.Read())
                 {
-                    //imageData = Convert.ToBase64String((byte[])dr["imageData"]),
-                    imageData = (byte[])dr["imageData"],
-                    advertiseTitle = dr["advertiseTitle"].ToString(),
-                    advertiseDescription = dr["advertiseDescription"].ToString(),
-                    advertisePrice = Convert.ToInt32(dr["advertisePrice"])
-                };
-                products.Add(advertise);
+                    int categoryId = reader.GetInt32(reader.GetOrdinal("CategoryId"));
+                    string categoryName = reader.GetString(reader.GetOrdinal("CategoryName"));
+                    int subcategoryId = reader.GetInt32(reader.GetOrdinal("SubcategoryId"));
+                    string subcategoryName = reader.GetString(reader.GetOrdinal("SubcategoryName"));
+
+                    if (currentCategory == null || currentCategory.CategoryId != categoryId)
+                    {
+                        // Start a new category
+                        currentCategory = new CategoryWithSubcategoriesViewModel
+                        {
+                            CategoryId = categoryId,
+                            CategoryName = categoryName,
+                            Subcategories = new List<SubcategoryViewModel>()
+                        };
+
+                        categoriesWithSubcategories.Add(currentCategory);
+                    }
+
+                    if (subcategoryId != 0) // Ensure there's a valid subcategory
+                    {
+                        currentCategory.Subcategories.Add(new SubcategoryViewModel
+                        {
+                            SubcategoryId = subcategoryId,
+                            SubcategoryName = subcategoryName
+                        });
+                    }
+                }
             }
+
             _connection.Close();
-            return products;
+            return categoriesWithSubcategories;
         }
-        #endregion
 
 
-        //public list<categoryviewmodel> all()
-        //{
-        //    list<categoryviewmodel> list = new list<categoryviewmodel>();
-        //    sqlcommand cmd = new sqlcommand("allcategories", _connection);
-        //    cmd.commandtype = commandtype.storedprocedure;
-        //    _connection.open();
-        //    sqldatareader reader = cmd.executereader();
-        //    while (reader.read())
-        //    {
-        //        categoryviewmodel categoryview = new categoryviewmodel()
-        //        {
-        //            category_id = convert.toint32(reader["category_id"]),
-        //            category_name = reader["category_name"].tostring(),
-        //            subcategories = reader["subcategories"].tostring()
-
-        //        };
-        //        list.add(categoryview);
-        //    }
-        //    _connection.close();
-        //    return list;
-        //}
-
-
-
-        public List<ModelProductSubCategory> GetCategoryWithSubcategories()
+        public List<ProductSubCategoryModel> GetCategoryWithSubcategories()
         {
-            List<ModelProductSubCategory> models = new List<ModelProductSubCategory>();
+            List<ProductSubCategoryModel> models = new List<ProductSubCategoryModel>();
 
             string query = "\tselect pc.productCategoryId,pc.productCategoryName,sb.productSubCategoryId,sb.productSubCategoryName from tbl_ProductSubCategory sb\r\n\t\t\t\tjoin\r\n\t\t\t\ttbl_ProductCategory pc on pc.productCategoryId=sb.productCategoryId";
 
@@ -122,7 +133,7 @@ namespace UserBuyScreen.Models
 
             while (reader.Read())
             {
-                ModelProductSubCategory subCategory = new ModelProductSubCategory()
+                ProductSubCategoryModel subCategory = new ProductSubCategoryModel()
                 {
                     productCategoryId = Convert.ToInt32(reader["productCategoryId"]),
                     productCategoryName = reader["productCategoryName"].ToString(),

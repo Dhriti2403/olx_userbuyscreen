@@ -1,34 +1,47 @@
 ﻿@model List<UserBuyScreen.Models.CategoryWithSubcategoriesViewModel>
 
-@{
-    ViewBag.Title = "Categories with Subcategories";
-}
+    @{
+        ViewBag.Title = "Categories with Subcategories";
+    }
 
-<h2>Categories with Subcategories</h2>
+    <h2>Categories with Subcategories</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Category</th>
-            <th>Subcategories</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var category in Model)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@category.CategoryName</td>
-                <td>@category.CategoryId</td>
-                <td>
-                    <ul>
-                        @foreach (var subcategory in category.Subcategories)
-                        {
-                            <li>@subcategory.SubcategoryName</li>
-                            <li>@subcategory.SubcategoryId</li>
-                        }
-                    </ul>
-                </td>
+                <th>Category</th>
+                <th>Subcategories</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>@category.CategoryName</td>
+                    <td>@category.CategoryId</td>
+                    <td>
+                        <ul>
+                            @foreach (var subcategory in category.Subcategories)
+                            {
+                                <li>@subcategory.SubcategoryName</li>
+                                <li>@subcategory.SubcategoryId</li>
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+@*@model List<UserBuyScreen.Models.CategoryWithSubcategoriesViewModel>
+
+@foreach (var category in Model)
+{
+    <h2>@category.CategoryName</h2>
+    <ul>
+        @foreach (var subcategory in category.Subcategories)
+        {
+            <li>@subcategory.SubcategoryName</li>
+}
+    </ul>
+}*@

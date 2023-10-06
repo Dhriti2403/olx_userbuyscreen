@@ -126,13 +126,13 @@
     </Compile>
     <Compile Include="Models\CategoryWithSubcategoriesViewModel.cs" />
     <Compile Include="Models\DataAccess.cs" />
-    <Compile Include="Models\ModelAdvertiseImages.cs" />
-    <Compile Include="Models\ModelArea.cs" />
-    <Compile Include="Models\ModelCity.cs" />
-    <Compile Include="Models\ModelMyAdvertise.cs" />
-    <Compile Include="Models\ModelProductCategory.cs" />
-    <Compile Include="Models\ModelProductSubCategory.cs" />
-    <Compile Include="Models\ModelState.cs" />
+    <Compile Include="Models\AdvertiseImagesModel.cs" />
+    <Compile Include="Models\AreaModel.cs" />
+    <Compile Include="Models\CityModel.cs" />
+    <Compile Include="Models\MyAdvertiseModel.cs" />
+    <Compile Include="Models\ProductCategoryModel.cs" />
+    <Compile Include="Models\ProductSubCategoryModel.cs" />
+    <Compile Include="Models\StateModel.cs" />
     <Compile Include="Models\SubcategoryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -169,12 +169,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\ShowByProducts.cshtml" />
     <Content Include="Views\Home\showAllCategory.cshtml" />
     <Content Include="Views\Home\showcategorywithsubcategory.cshtml" />
     <Content Include="Views\Home\showcatsub.cshtml" />
     <Content Include="Views\Home\newfilter.cshtml" />
-    <Content Include="Views\Home\showAdvertise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
