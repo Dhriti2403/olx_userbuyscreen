@@ -15,7 +15,9 @@
 
     <table class="table">
         <tr>
-
+            <th>
+                @Html.DisplayNameFor(model => model[0].advertiseId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model[0].stateName)
             </th>
@@ -42,33 +44,36 @@
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.stateName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.cityName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.areaName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.advertiseTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.advertiseDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.advertisePrice)
-                </td>
-                <td>
-                    @if (item.imageData != null && item.imageData.Length > 0)
-                    {
-                        var base64Image = Convert.ToBase64String(item.imageData);
-                        <img src="data:image/png;base64, @base64Image" alt="Image" style="height:200px; width:200px " />
-                    }
-                </td>
-            </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.advertiseId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stateName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.areaName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.advertiseTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.advertiseDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.advertisePrice)
+        </td>
+        <td>
+            @if (item.imageData != null && item.imageData.Length > 0)
+            {
+                var base64Image = Convert.ToBase64String(item.imageData);
+                <img src="data:image/png;base64, @base64Image" alt="Image" style="height:200px; width:200px " />
+            }
+        </td>
+    </tr>
         }
     </table>
 </body>

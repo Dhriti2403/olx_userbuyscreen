@@ -52,6 +52,7 @@ namespace UserBuyScreen.Models
                         cityName = reader["cityName"].ToString(),
                         stateName = reader["statename"].ToString(),
                         areaName = reader["areaName"].ToString(),
+                        advertiseId = Convert.ToInt32(reader["advertiseId"]),
                     };
                     models.Add(model);
                 }
@@ -171,7 +172,10 @@ namespace UserBuyScreen.Models
                     cityName = dr["cityName"].ToString(),
                     stateName = dr["statename"].ToString(),
                     areaName = dr["areaName"].ToString(),
-                    imageData= (byte[])dr["imageData"]
+                    imageData = (byte[])dr["imageData"],
+                    advertiseId = Convert.ToInt32(dr["advertiseId"]),
+                    userId = Convert.ToInt32(dr["userId"]),
+                    firstName = dr["firstName"].ToString(),
                 };
                 advertise.Add(add);
             }

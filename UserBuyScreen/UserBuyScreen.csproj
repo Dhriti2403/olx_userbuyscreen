@@ -172,7 +172,7 @@
     <Content Include="Views\Home\showcategorywithsubcategory.cshtml" />
     <Content Include="Views\Home\showcatsub.cshtml" />
     <Content Include="Views\Home\newfilter.cshtml" />
-    <Content Include="Views\Home\shoeAdvertiseDetails.cshtml" />
+    <Content Include="Views\Home\showAdvertiseDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -18,6 +18,8 @@ namespace UserBuyScreen.Models
         public int areaId { get; set; }
         public bool advertiseStatus { get; set; }
         public int userId { get; set; }
+        public string firstName { get; set; }
+
 
         public bool advertiseapproved { get; set; }
 
