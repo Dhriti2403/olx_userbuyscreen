@@ -36,6 +36,13 @@ namespace UserBuyScreen.Controllers
             return View(categorywithsub);
         }
 
-     
+        public ActionResult shoeAdvertiseDetails(int advertiseId)
+        {
+            DataAccess dataAccess = new DataAccess();
+            IEnumerable<AdvertiseImagesModel> advertise = dataAccess.GetAdvertiseById(advertiseId);
+
+            return View(advertise);
+        }
+
     }
 }

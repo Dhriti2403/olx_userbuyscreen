@@ -7,7 +7,7 @@ namespace UserBuyScreen.Models
 {
     public class SubcategoryViewModel
     {
-        public int SubcategoryId { get; set; }
-        public string SubcategoryName { get; set; }
+        public int productSubCategoryId { get; set; }
+        public string productSubCategoryName { get; set; }
     }
 }

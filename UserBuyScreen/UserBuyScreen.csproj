@@ -169,10 +169,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\showAllCategory.cshtml" />
     <Content Include="Views\Home\showcategorywithsubcategory.cshtml" />
     <Content Include="Views\Home\showcatsub.cshtml" />
     <Content Include="Views\Home\newfilter.cshtml" />
+    <Content Include="Views\Home\shoeAdvertiseDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,7 +19,8 @@ namespace UserBuyScreen.Models
 
 
         #region FILTER
-        public List<AdvertiseImagesModel> newFilter(int? productCategoryId, int? productSubCategoryId, int? stateId, int? cityId, int? areaId, decimal? minprice, decimal? maxprice,int? advertiseId)
+        public List<AdvertiseImagesModel> newFilter(int? productCategoryId, int? productSubCategoryId, int? stateId, int? cityId,
+            int? areaId, decimal? minprice, decimal? maxprice, int? advertiseId)
         {
             List<AdvertiseImagesModel> models = new List<AdvertiseImagesModel>();
             _connection.Open();
@@ -37,25 +38,31 @@ namespace UserBuyScreen.Models
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                AdvertiseImagesModel model = new AdvertiseImagesModel()
+                
+                bool isApproved = Convert.ToBoolean(reader["advertiseapproved"]);
+
+                if (isApproved)
                 {
-               
-                    advertiseTitle = reader["advertiseTitle"].ToString(),
-                    imageData= (byte[])reader["imageData"],
-                    advertiseDescription = reader["advertiseDescription"].ToString(),
-                    advertisePrice = Convert.ToInt32(reader["advertisePrice"]),
-                    cityName = reader["cityName"].ToString(),
-                    stateName = reader["statename"].ToString(),
-                    areaName=reader["areaName"].ToString(), 
-                };
-                models.Add(model);
+                    AdvertiseImagesModel model = new AdvertiseImagesModel()
+                    {
+                        advertiseTitle = reader["advertiseTitle"].ToString(),
+                        imageData = (byte[])reader["imageData"],
+                        advertiseDescription = reader["advertiseDescription"].ToString(),
+                        advertisePrice = Convert.ToInt32(reader["advertisePrice"]),
+                        cityName = reader["cityName"].ToString(),
+                        stateName = reader["statename"].ToString(),
+                        areaName = reader["areaName"].ToString(),
+                    };
+                    models.Add(model);
+                }
             }
             _connection.Close();
             return models;
         }
+
         #endregion
 
-       
+
 
 
         public List<CategoryWithSubcategoriesViewModel> GetCategoriesWithSubcategories()
@@ -87,30 +94,30 @@ namespace UserBuyScreen.Models
 
                 while (reader.Read())
                 {
-                    int categoryId = reader.GetInt32(reader.GetOrdinal("CategoryId"));
-                    string categoryName = reader.GetString(reader.GetOrdinal("CategoryName"));
-                    int subcategoryId = reader.GetInt32(reader.GetOrdinal("SubcategoryId"));
-                    string subcategoryName = reader.GetString(reader.GetOrdinal("SubcategoryName"));
+                    int productCategoryId = reader.GetInt32(reader.GetOrdinal("productCategoryId"));
+                    string productCategoryName = reader.GetString(reader.GetOrdinal("productCategoryName"));
+                    int productSubCategoryId = reader.GetInt32(reader.GetOrdinal("productSubCategoryId"));
+                    string productSubCategoryName = reader.GetString(reader.GetOrdinal("SubcategoryName"));
 
-                    if (currentCategory == null || currentCategory.CategoryId != categoryId)
+                    if (currentCategory == null || currentCategory.productCategoryId != productCategoryId)
                     {
                         // Start a new category
                         currentCategory = new CategoryWithSubcategoriesViewModel
                         {
-                            CategoryId = categoryId,
-                            CategoryName = categoryName,
+                            productCategoryId = productCategoryId,
+                            productCategoryName = productCategoryName,
                             Subcategories = new List<SubcategoryViewModel>()
                         };
 
                         categoriesWithSubcategories.Add(currentCategory);
                     }
 
-                    if (subcategoryId != 0) // Ensure there's a valid subcategory
+                    if (productSubCategoryId != 0) // Ensure there's a valid subcategory
                     {
                         currentCategory.Subcategories.Add(new SubcategoryViewModel
                         {
-                            SubcategoryId = subcategoryId,
-                            SubcategoryName = subcategoryName
+                            productSubCategoryId = productSubCategoryId,
+                            productSubCategoryName = productSubCategoryName
                         });
                     }
                 }
@@ -125,9 +132,8 @@ namespace UserBuyScreen.Models
         {
             List<ProductSubCategoryModel> models = new List<ProductSubCategoryModel>();
 
-            string query = "\tselect pc.productCategoryId,pc.productCategoryName,sb.productSubCategoryId,sb.productSubCategoryName from tbl_ProductSubCategory sb\r\n\t\t\t\tjoin\r\n\t\t\t\ttbl_ProductCategory pc on pc.productCategoryId=sb.productCategoryId";
-
-            SqlCommand cmd = new SqlCommand(query, _connection);
+            SqlCommand cmd = new SqlCommand("CategoryWithSubcategory", _connection);
+            cmd.CommandType = CommandType.StoredProcedure;
             _connection.Open();
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -143,7 +149,35 @@ namespace UserBuyScreen.Models
                 models.Add(subCategory);
             }
             _connection.Close(); return models;
-        }   
+        }
+
+        public IEnumerable<AdvertiseImagesModel> GetAdvertiseById(int advertiseId)
+        {
+            List<AdvertiseImagesModel> advertise = new List<AdvertiseImagesModel>();
+            _connection.Open();
+            SqlCommand cmd = new SqlCommand("DisplayAdDetail", _connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@advertiseId", advertiseId);
+
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                AdvertiseImagesModel add = new AdvertiseImagesModel()
+                {
+                    advertiseTitle = dr["advertiseTitle"].ToString(),
+                    advertiseDescription = dr["advertiseDescription"].ToString(),
+                    advertisePrice = Convert.ToInt32(dr["advertisePrice"]),
+                    cityName = dr["cityName"].ToString(),
+                    stateName = dr["statename"].ToString(),
+                    areaName = dr["areaName"].ToString(),
+                    imageData= (byte[])dr["imageData"]
+                };
+                advertise.Add(add);
+            }
+            _connection.Close();
+            return advertise;
+        }
     }
 }
 
