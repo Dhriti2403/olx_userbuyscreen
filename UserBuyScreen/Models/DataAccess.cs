@@ -53,6 +53,11 @@ namespace UserBuyScreen.Models
                         stateName = reader["statename"].ToString(),
                         areaName = reader["areaName"].ToString(),
                         advertiseId = Convert.ToInt32(reader["advertiseId"]),
+                        productCategoryName= reader["productCategoryName"].ToString(),
+                        productSubCategoryName= reader["productSubCategoryName"].ToString(),
+                        productCategoryId = Convert.ToInt32(reader["productCategoryId"]),
+                        productSubCategoryId = Convert.ToInt32(reader["productSubCategoryId"]),
+
                     };
                     models.Add(model);
                 }
@@ -66,67 +71,67 @@ namespace UserBuyScreen.Models
 
 
 
-        public List<CategoryWithSubcategoriesViewModel> GetCategoriesWithSubcategories()
-        {
-            List<CategoryWithSubcategoriesViewModel> categoriesWithSubcategories = new List<CategoryWithSubcategoriesViewModel>();
+        //public List<CategoryWithSubcategoriesViewModel> GetCategoriesWithSubcategories()
+        //{
+        //    List<CategoryWithSubcategoriesViewModel> categoriesWithSubcategories = new List<CategoryWithSubcategoriesViewModel>();
 
 
-            _connection.Open();
+        //    _connection.Open();
 
-            string query = @"
-            SELECT
-                pc.productCategoryId AS CategoryId,
-                pc.productCategoryName AS CategoryName,
-                sb.productSubCategoryId AS SubcategoryId,
-                sb.productSubCategoryName AS SubcategoryName
-            FROM
-                tbl_ProductCategory pc
-            LEFT JOIN
-                tbl_ProductSubCategory sb
-            ON
-                pc.productCategoryId = sb.productCategoryId
-            ORDER BY
-                pc.productCategoryId, sb.productSubCategoryId";
+        //    string query = @"
+        //    SELECT
+        //        pc.productCategoryId AS CategoryId,
+        //        pc.productCategoryName AS CategoryName,
+        //        sb.productSubCategoryId AS SubcategoryId,
+        //        sb.productSubCategoryName AS SubcategoryName
+        //    FROM
+        //        tbl_ProductCategory pc
+        //    LEFT JOIN
+        //        tbl_ProductSubCategory sb
+        //    ON
+        //        pc.productCategoryId = sb.productCategoryId
+        //    ORDER BY
+        //        pc.productCategoryId, sb.productSubCategoryId";
 
-            using (SqlCommand command = new SqlCommand(query, _connection))
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                CategoryWithSubcategoriesViewModel currentCategory = null;
+        //    using (SqlCommand command = new SqlCommand(query, _connection))
+        //    using (SqlDataReader reader = command.ExecuteReader())
+        //    {
+        //        CategoryWithSubcategoriesViewModel currentCategory = null;
 
-                while (reader.Read())
-                {
-                    int productCategoryId = reader.GetInt32(reader.GetOrdinal("productCategoryId"));
-                    string productCategoryName = reader.GetString(reader.GetOrdinal("productCategoryName"));
-                    int productSubCategoryId = reader.GetInt32(reader.GetOrdinal("productSubCategoryId"));
-                    string productSubCategoryName = reader.GetString(reader.GetOrdinal("SubcategoryName"));
+        //        while (reader.Read())
+        //        {
+        //            int productCategoryId = reader.GetInt32(reader.GetOrdinal("productCategoryId"));
+        //            string productCategoryName = reader.GetString(reader.GetOrdinal("productCategoryName"));
+        //            int productSubCategoryId = reader.GetInt32(reader.GetOrdinal("productSubCategoryId"));
+        //            string productSubCategoryName = reader.GetString(reader.GetOrdinal("SubcategoryName"));
 
-                    if (currentCategory == null || currentCategory.productCategoryId != productCategoryId)
-                    {
-                        // Start a new category
-                        currentCategory = new CategoryWithSubcategoriesViewModel
-                        {
-                            productCategoryId = productCategoryId,
-                            productCategoryName = productCategoryName,
-                            Subcategories = new List<SubcategoryViewModel>()
-                        };
+        //            if (currentCategory == null || currentCategory.productCategoryId != productCategoryId)
+        //            {
+        //                // Start a new category
+        //                currentCategory = new CategoryWithSubcategoriesViewModel
+        //                {
+        //                    productCategoryId = productCategoryId,
+        //                    productCategoryName = productCategoryName,
+        //                    Subcategories = new List<SubcategoryViewModel>()
+        //                };
 
-                        categoriesWithSubcategories.Add(currentCategory);
-                    }
+        //                categoriesWithSubcategories.Add(currentCategory);
+        //            }
 
-                    if (productSubCategoryId != 0) // Ensure there's a valid subcategory
-                    {
-                        currentCategory.Subcategories.Add(new SubcategoryViewModel
-                        {
-                            productSubCategoryId = productSubCategoryId,
-                            productSubCategoryName = productSubCategoryName
-                        });
-                    }
-                }
-            }
+        //            if (productSubCategoryId != 0) // Ensure there's a valid subcategory
+        //            {
+        //                currentCategory.Subcategories.Add(new SubcategoryViewModel
+        //                {
+        //                    productSubCategoryId = productSubCategoryId,
+        //                    productSubCategoryName = productSubCategoryName
+        //                });
+        //            }
+        //        }
+        //    }
 
-            _connection.Close();
-            return categoriesWithSubcategories;
-        }
+        //    _connection.Close();
+        //    return categoriesWithSubcategories;
+        //}
 
 
         public List<ProductSubCategoryModel> GetCategoryWithSubcategories()

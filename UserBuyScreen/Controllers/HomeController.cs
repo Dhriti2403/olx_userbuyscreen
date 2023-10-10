@@ -20,13 +20,13 @@ namespace UserBuyScreen.Controllers
         }
 
 
-        public ActionResult showcategorywithsubcategory()
-        {
-            DataAccess dataAccess = new DataAccess();
-            List<CategoryWithSubcategoriesViewModel> categorywithsub = dataAccess.GetCategoriesWithSubcategories();
+        //public ActionResult showcategorywithsubcategory()
+        //{
+        //    DataAccess dataAccess = new DataAccess();
+        //    List<CategoryWithSubcategoriesViewModel> categorywithsub = dataAccess.GetCategoriesWithSubcategories();
 
-            return View(categorywithsub);
-        }
+        //    return View(categorywithsub);
+        //}
 
         public ActionResult showcatsub()
         {
